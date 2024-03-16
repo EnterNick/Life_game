@@ -1,15 +1,26 @@
+import math
+
 import pygame
 from copy import deepcopy
 
 
 class Board:
     def __init__(self, width, height):
+        self.updating = False
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
         self.left = 10
         self.top = 10
-        self.cell_size = 30
+        self.cell_size = 20
+        self.pheight = self.height * self.cell_size
+        self.pwidth = self.width * self.cell_size
+
+    def start(self):
+        self.updating = True
+
+    def stop(self):
+        self.updating = False
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -60,9 +71,8 @@ class Board:
         cells = deepcopy(self.board)
         for i in range(self.height):
             for j in range(self.width):
-                a = self.neighbors(cells, 1, i, j)
+                a = self.neighbors(cells, i, j)
                 a = a - 1 if cells[i][j] else a
-                # print(a, i, j) if a else ''
                 if a == 3:
                     self.board[i][j] = 1
                 elif a not in [2, 3]:
@@ -70,3 +80,17 @@ class Board:
 
     def reset(self):
         self.board = [[0] * self.width for _ in range(self.height)]
+
+    def set_size(self, n):
+        if n > self.width:
+            for i in self.board:
+                i.extend([0] * (n - self.width))
+            for _ in range(n):
+                self.board.append([0] * n)
+        else:
+            self.board = self.board[:n]
+            for i in self.board:
+                for _ in range(self.width - n):
+                    i.pop(-1)
+        self.cell_size = math.ceil(self.pwidth / n)
+        self.width = self.height = n
