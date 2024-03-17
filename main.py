@@ -33,7 +33,7 @@ def main():
     textbox = TextBox(screen, 600, 150, 75, 25, font=font, textColour='green', colour=(43, 43, 43),
                       borderThickness=0)
     textbox_speed = TextBox(screen, 600, 220, 75, 25, font=font, textColour='green', colour=(43, 43, 43),
-                      borderThickness=0)
+                            borderThickness=0)
     speed_slider = Slider(screen, 600, 250, 100, 20, min=10, max=60, initial=30)
     textbox.setText('Board size:')
     textbox_speed.setText('Speed:')
